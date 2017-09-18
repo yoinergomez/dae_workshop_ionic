@@ -39,11 +39,11 @@ export class MercadoLibreApiProvider {
   }
 
   autosuggestItems(query: string) {
-    let URL = 'https://api.mercadolibre.com/sites/MCO/autosuggest?limit=9&q='+query
+    let URL = 'https://api.mercadolibre.com/sites/MCO/autosuggest?limit=6&q='+query
     return new Promise((resolve, reject) => {
       this.http.get(URL).map(res => res.json()).subscribe(
         (data) => {
-          resolve(data)
+          resolve(data.suggested_queries)
         },
         (error) => {
           reject("Error: " + error)
