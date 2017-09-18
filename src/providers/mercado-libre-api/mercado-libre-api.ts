@@ -11,8 +11,43 @@ import 'rxjs/add/operator/map';
 @Injectable()
 export class MercadoLibreApiProvider {
 
-  constructor(public http: Http) {
-    console.log('Hello MercadoLibreApiProvider Provider');
+
+  constructor(public http: Http) { }
+
+  searchItem(item: string) {
+    return new Promise((resolve, reject) => {
+      let URL: string = "https://api.mercadolibre.com/sites/MCO/search?q="+item
+      this.http.get(URL).map(res => res.json()).subscribe(
+        (response) => {
+          //resolve(response.results)
+          resolve(this.resizePictures(response))
+        },
+        (error) => {
+          reject("Error searchItem: " + error)
+        })
+    })
   }
 
+  private resizePictures(response: any) {
+    var result = response.results
+
+    for (let item of result) {
+      item.thumbnail = item.thumbnail.replace('-I', '-O')
+    }
+
+    return result
+  }
+
+  autosuggestItems(query: string) {
+    let URL = 'https://api.mercadolibre.com/sites/MCO/autosuggest?limit=9&q='+query
+    return new Promise((resolve, reject) => {
+      this.http.get(URL).map(res => res.json()).subscribe(
+        (data) => {
+          resolve(data)
+        },
+        (error) => {
+          reject("Error: " + error)
+        })
+    })
+  }
 }
