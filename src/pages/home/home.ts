@@ -15,7 +15,7 @@ export class HomePage  {
   showList : boolean
 
   constructor(public navCtrl: NavController, public mcAPI: MercadoLibreApiProvider) {
-    this.searchItem('led');
+    //this.searchItem('led');
     this.showList = true
   }
 
