@@ -1,21 +1,28 @@
 <ion-header>
   <ion-navbar>
-    <!-- <img src="./assets/icon/logo_ml.png" alt=""/> -->
-
     <ion-buttons start>
       <button ion-button icon-only>
                   <img src="./assets/icon/logo_ml.png" style="height: 45px;"/>
       </button>
     </ion-buttons>
     <ion-title>
-      MercadoSearch @yoinergomez
+      MercadoSearch <small><strong>@yoinergomez</strong></small>
     </ion-title>
-
-
   </ion-navbar>
-  <ion-searchbar [(ngModel)]="query" (ngModelChange)='autosuggestItems($event)' showCancelButton  (change)="autosuggestItems($event)" autocorrect="off"></ion-searchbar>
-  <ion-list>
-    <ion-item *ngFor="let item of suggestItems">
+
+
+  <div style="display: -webkit-inline-box; width: 100%; margin:auto;">
+    <ion-searchbar [(ngModel)]="query" (ngModelChange)='autosuggestItems($event)' (change)="autosuggestItems($event)" autocorrect="off"
+      autocomplete="off" placeholder="I'm shopping for..." animated="true" style="width: 83%;">
+    </ion-searchbar>
+    <button ion-button icon-only style="margin-top: 11px;" (click)='searchItem(query)'>
+      <ion-icon name="search"></ion-icon>
+    </button>
+  </div>
+
+
+  <ion-list *ngIf='showList'>
+    <ion-item *ngFor="let item of suggestItems" (click)='searchItem(item.q)'>
       {{ item.q }}
     </ion-item>
   </ion-list>
@@ -23,7 +30,6 @@
 
 
 <ion-content padding>
-  <button ion-button block (click)="searchItem('xxx')">Search item</button>
 
   <ion-grid>
     <ion-row>
@@ -31,10 +37,11 @@
         <ion-card>
           <ion-card-content color="primary">
             <img [src]="item.thumbnail" alt="" />
+            <ion-card-title text-center>
+              {{item.title}}
+            </ion-card-title>
             <p color="dark">
-              <ion-card-title text-center>
-                {{item.title}}
-              </ion-card-title>
+              {{item.price}}
             </p>
           </ion-card-content>
         </ion-card>

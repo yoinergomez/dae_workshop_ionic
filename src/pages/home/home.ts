@@ -12,26 +12,30 @@ export class HomePage  {
   query: string;
   items: any
   suggestItems: any
+  showList : boolean
 
   constructor(public navCtrl: NavController, public mcAPI: MercadoLibreApiProvider) {
     this.searchItem('led');
+    this.showList = true
   }
 
   searchItem(itemName: string) {
+    this.showList = false
+    this.query = itemName
     this.mcAPI.searchItem(itemName).then((response) => {
       this.items = response
     })
   }
 
   autosuggestItems() {
-    console.log(this.query);
-
-    let val = this.query;
+    let val = this.query
+    this.showList = true
     if (val && val.trim() !== '') {
       this.mcAPI.autosuggestItems(this.query).then((response) => {
-        console.log(response);
         this.suggestItems = response
       })
+    } else {     
+      this.showList = false
     }
   }
 }
